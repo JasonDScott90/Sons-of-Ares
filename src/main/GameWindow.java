@@ -1,5 +1,7 @@
 package main;
 
+import inputs.KeyboardInputs;
+
 import javax.swing.*;
 
 public class GameWindow extends JFrame {
@@ -10,5 +12,6 @@ public class GameWindow extends JFrame {
         jFrame.add(gamePanel);
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
+        
     }
 }
