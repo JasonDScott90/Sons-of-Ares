@@ -5,6 +5,7 @@ import inputs.MouseInputs;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class GamePanel extends JPanel {
 
@@ -12,9 +13,13 @@ public class GamePanel extends JPanel {
     private final int SCREEN_HEIGHT = 600;
 
     private MouseInputs mouseInputs;
-    public int xDelta = 100, yDelta = 100;
+    public float xDelta = 100, yDelta = 100;
+    private float xDir = 1f, yDir = 1f;
+    private Color color = Color.gray;
+    private Random random;
 
     public GamePanel(){
+        random = new Random();
         mouseInputs = new MouseInputs(this);
         addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
@@ -27,18 +32,18 @@ public class GamePanel extends JPanel {
 
     public void changeXDelta(int value){
         this.xDelta += value;
-        repaint();
+
     }
 
     public void changeYDelta(int value){
         this.yDelta += value;
-        repaint();
+
     }
 
     public void setRectPos(int x, int y){
         this.xDelta = x;
         this.yDelta = y;
-        repaint();
+
     }
 
     public void paintComponent(Graphics g){
@@ -47,8 +52,11 @@ public class GamePanel extends JPanel {
         drawTitle(g);
 
         // mouse follower thing
-        g.setColor(Color.gray);
-        g.fillRoundRect(xDelta, yDelta, 20, 20, 5, 5);
+        g.setColor(color);
+        updateRectangle();
+        g.fillRoundRect((int)xDelta, (int)yDelta, 20, 20, 5, 5);
+
+
 
     }
 
@@ -61,5 +69,24 @@ public class GamePanel extends JPanel {
         g.setColor(Color.GRAY);
         g.drawString("SONS OF ARES", (SCREEN_WIDTH - metrics2.stringWidth("SONS OF ARES")) / 2 -1, SCREEN_HEIGHT / 2 -1);
 
+    }
+    private void updateRectangle(){
+        xDelta += xDir;
+        if(xDelta > 400 || xDelta < 0) {
+            xDir *= 1;
+            color = getRndColor();
+        }
+        yDelta += yDir;
+        if(yDelta > 400 || yDelta < 0) {
+            yDir *= 1;
+            color = getRndColor();
+        }
+    }
+
+    private Color getRndColor() {
+        int r = random.nextInt(255);
+        int g = random.nextInt(255);
+        int b = random.nextInt(255);
+        return new Color(r,g,b);
     }
 }
